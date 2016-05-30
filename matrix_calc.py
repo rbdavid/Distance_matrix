@@ -52,7 +52,7 @@ while start <= end:
 	u.load_new('%sproduction.%s/production.%s.dcd' %(traj_loc,start,start))
 
 	for ts in u.trajectory:
-		if ts.frame%500 == 0:
+		if ts.frame%10 == 0:
 			ffprint('Working on timestep %d of trajectory %d' %(ts.frame, start))
 
 		for i in range(nRes-1):
