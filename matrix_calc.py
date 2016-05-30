@@ -23,6 +23,7 @@ end = int(sys.argv[4])
 zeros = np.zeros
 square = np.square
 sqrt = np.sqrt
+flush = sys.stdout.flush
 
 important = 'protein'
 
