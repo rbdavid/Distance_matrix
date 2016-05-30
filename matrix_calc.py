@@ -21,6 +21,8 @@ start = int(sys.argv[3])
 end = int(sys.argv[4])
 
 zeros = np.zeros
+square = np.square
+sqrt = np.sqrt
 
 important = 'protein'
 
@@ -55,12 +57,14 @@ while start <= end:
 			for j in range(i+1,nRes):
 				res1 = u_important.residues[j]
 				com1 = res1.center_of_mass()
-				avg_matrix[i,j], std_matrix[i,j] += Euclid_distance(com0,com1,dist2=True) 
+				dist, dist2 = Euclid_distance(com0,com1,dist2=True)
+				avg_matrix[i,j] += dist
+				std_matrix[i,j] += dist2
 		nSteps += 1
 
 avg_matrix /= nSteps
 std_matrix /= nSteps
-std_matrix -= avg_matrix
+std_matrix -= square(avg_matrix)
 std_matrix = sqrt(std_matrix)
 
 out1 = open('%03d.%03d.avg_distance_matrix.dat' %(int(sys.argv[3])),'w')
