@@ -63,7 +63,7 @@ std_matrix /= nSteps
 std_matrix -= avg_matrix
 std_matrix = sqrt(std_matrix)
 
-out1 = open('%03d.%03d.avg_distance_matrix.dat' %(int(sys.argv[3]),'w')
+out1 = open('%03d.%03d.avg_distance_matrix.dat' %(int(sys.argv[3])),'w')
 out2 = open('%03d.%03d.std_distance_matrix.dat' %(int(sys.argv[3])),'w')
 for i in range(nRes):
 	for j in range(nRes):
