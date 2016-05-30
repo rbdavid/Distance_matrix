@@ -57,3 +57,22 @@ def wrapping(x,dim):
 			t[i] = -dim[i]*round(x[i]/dim[i])
 	return t
 
+def Euclid_distance(x,y,dist2=False):
+	""" Calculates the Euclidian Distance between two arrays of the same size
+
+	Usage: dist = Euclid_distance(x,y)
+
+	Arguments:
+	x, y: numpy arrays with the same size
+	dist2: if False, this function will not output the dist2 value; if True, this function will output the distance as well as the distance^2 values (allows for variance/standard deviation analyses)
+
+	"""
+
+	if dist2 == True:
+		x2 = sums(square(x-y))
+		x = sqrt(x2)
+		return x, x2
+
+	else:
+		return sqrt(sums(square(x-y)))
+
