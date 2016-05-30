@@ -52,6 +52,9 @@ while start <= end:
 	u.load_new('%sproduction.%s/production.%s.dcd' %(traj_loc,start,start))
 
 	for ts in u.trajectory:
+		if ts.frame%500 == 0:
+			ffprint('Working on timestep %d of trajectory %d' %(ts.frame, start))
+
 		for i in range(nRes-1):
 			res0 = u_important.residues[i]
 			com0 = res0.center_of_mass()
