@@ -25,7 +25,7 @@ square = np.square
 sqrt = np.sqrt
 flush = sys.stdout.flush
 
-important = 'protein'
+important = 'all'
 
 # ----------------------------------------
 # SUBROUTINES:
@@ -47,12 +47,12 @@ avg_matrix = zeros((nRes,nRes))
 std_matrix = zeros((nRes,nRes))
 
 nSteps = 0
-while start <= end:
+while start < end+1:
 	ffprint('Loading trajectory %s' %(start))
-	u.load_new('%sproduction.%s/production.%s.dcd' %(traj_loc,start,start))
+	u.load_new('test.mdcrd')
 
 	for ts in u.trajectory:
-		if ts.frame%1000 == 0:
+		if ts.frame%10 == 0:
 			ffprint('Working on timestep %d of trajectory %d' %(ts.frame, start))
 
 		for i in range(nRes-1):
