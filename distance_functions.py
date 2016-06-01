@@ -15,29 +15,33 @@ zeros = np.zeros
 
 # SUBROUTINES:
 
-def RMSD(x,y):
+def RMSD(x,y,n):
 	""" Calculates the Root Mean Squared Distance between two arrays of the same size
 
-	Usage: rmsd = RMSD(x,y)
+	Usage: rmsd = RMSD(x,y,n)
+
+	Arguments:
+	x, y: numpy arrays with the same shape (n X 3)
+	n: number of particles being summed over; ex: number of atoms in the atom selection being analyzed;
+		if n = 1, this function calculates the distance between x and y arrays
+
+	"""
+	
+	return sqrt(sums(square(x-y))/n)
+
+def MSD(x,y,n):
+	""" Calculates the Mean Squared Distance between two arrays of the same size
+
+	Usage: msd = MSD(x,y,n)
 
 	Arguments:
 	x, y: numpy arrays with the same shape
-	
-	"""
-	
-	return sqrt(sums(square(x-y))/len(x))
+	n: number of particles being summed over; ex: number of atoms in the atom selection being analyzed;
+		if n = 1, this function calculates the distance squared between x and y arrays
 
-def MSD(x,y):
-	""" Calculates the Root Mean Squared Distance between two arrays of the same size
-
-	Usage: msd = MSD(x,y)
-
-	Arguments:
-	x, y: numpy arrays with the same shape
-	
 	"""
 
-	return sums(square(x-y))/len(x)
+	return sums(square(x-y))/n
 
 def wrapping(x,dim):
 	""" Calculates the translation matrix needed to wrap a particle back into the original periodic box
@@ -56,23 +60,4 @@ def wrapping(x,dim):
 		if (x[i]<-dim2[i]) or (x[i]>dim2[i]):
 			t[i] = -dim[i]*round(x[i]/dim[i])
 	return t
-
-def Euclid_distance(x,y,dist2=False):
-	""" Calculates the Euclidian Distance between two arrays of the same size
-
-	Usage: dist = Euclid_distance(x,y)
-
-	Arguments:
-	x, y: numpy arrays with the same size
-	dist2: if False, this function will not output the dist2 value; if True, this function will output the distance as well as the distance^2 values (allows for variance/standard deviation analyses)
-
-	"""
-
-	if dist2 == True:
-		x2 = sums(square(x-y))
-		x = sqrt(x2)
-		return x, x2
-
-	else:
-		return sqrt(sums(square(x-y)))
 

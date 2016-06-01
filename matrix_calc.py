@@ -50,6 +50,7 @@ nSteps = 0
 while start <= end:
 	ffprint('Loading trajectory %s' %(start))
 	u.load_new('%sproduction.%s/production.%s.dcd' %(traj_loc,start,start))
+	nSteps += len(u.trajectory)
 
 	for ts in u.trajectory:
 		if ts.frame%1000 == 0:
@@ -61,10 +62,10 @@ while start <= end:
 			for j in range(i+1,nRes):
 				res1 = u_important.residues[j]
 				com1 = res1.center_of_mass()
-				dist, dist2 = Euclid_distance(com0,com1,dist2=True)
+				dist2 = MSD(com0,com1,1)
+				dist = sqrt(dist2)
 				avg_matrix[i,j] += dist
 				std_matrix[i,j] += dist2
-		nSteps += 1
 	start +=1
 
 ffprint(nSteps)
