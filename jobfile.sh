@@ -11,7 +11,7 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/software/usr/hpcx-v1.2.0-292-gcc-MLNX_
 export PYTHON_EGG_CACHE="./"
 
 PDB_LOC='~/Projects/Molecular_Machines/Helicase_DNS3/Analysis/AMBER_apo/truncated.pdb'
-TRAJ_LOC='~/Projects/Molecular_Machines/Helicase_DNS3/Analysis/AMBER_apo/'
+TRAJ_LOC='~/Projects/Molecular_Machines/Helicase_DNS3/Analysis/AMBER_apo/Truncated'
 NPRODS=150
 NCPUS=20
 
@@ -27,7 +27,7 @@ do
 		printf -v y "%03d" $a
 		mkdir $x.$y.distance_matrix
 		cd $x.$y.distance_matrix
-		time ./matrix_calc.py $PDB_LOC $TRAJ_LOC $prod $a > dist_calc.output & 
+		time ../matrix_calc.py $PDB_LOC $TRAJ_LOC $prod $a > dist_calc.output & 
 		cd ../
 		((j=$j+1))
 		((prod=$prod+5))
