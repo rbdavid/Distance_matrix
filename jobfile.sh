@@ -12,7 +12,7 @@ export PYTHON_EGG_CACHE="./"
 
 PDB_LOC='~/Projects/Molecular_Machines/Helicase_DNS3/Analysis/AMBER_apo/truncated.pdb'
 TRAJ_LOC='~/Projects/Molecular_Machines/Helicase_DNS3/Analysis/AMBER_apo/'
-NPRODS=120
+NPRODS=150
 NCPUS=20
 
 prod=1
@@ -27,19 +27,11 @@ do
 		printf -v y "%03d" $a
 		mkdir $x.$y.distance_matrix
 		cd $x.$y.distance_matrix
-		time ./matrix_calc.py $pdb_loc $traj_loc $prod $a &
+		time ./matrix_calc.py $PDB_LOC $TRAJ_LOC $prod $a > dist_calc.output & 
 		cd ../
 		((j=$j+1))
 		((prod=$prod+5))
 	done
 	wait
-	echo 'moving to j=2'
 done
-
-#for ((prod=1;prod<=$NPRODS;prod+=5))
-#do
-#	((a=$prod+4))
-#	time ./matrix_calc.py $pdb_loc $traj_loc $prod $a &
-#done
-#wait
 
