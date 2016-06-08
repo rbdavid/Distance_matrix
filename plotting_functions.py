@@ -8,6 +8,8 @@ import numpy as np
 import sys
 import os
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+import matplotlib as mpl
 from matplotlib.ticker import NullFormatter
 
 stdev = np.std
@@ -16,6 +18,22 @@ nullfmt = NullFormatter()
 
 # ----------------------------------------
 # PLOTTING SUBROUTINES
+
+def make_colormap(seq):
+	"""Return a LinearSegmentedColormap
+	seq: a sequence of floats and RGB-tuples. The floats should be increasing
+	and in the interval (0,1).
+	"""
+	seq = [(None,) * 3, 0.0] + list(seq) + [1.0, (None,) * 3]
+	cdict = {'red': [], 'green': [], 'blue': []}
+	for i, item in enumerate(seq):
+		if isinstance(item, float):
+			r1, g1, b1 = seq[i - 1]
+			r2, g2, b2 = seq[i + 1]
+			cdict['red'].append([item, r1, r2])
+			cdict['green'].append([item, g1, g2])
+			cdict['blue'].append([item, b1, b2])
+	return mcolors.LinearSegmentedColormap('CustomMap', cdict)
 
 def plot_1d(xdata, ydata, color, x_axis, y_axis, system, analysis, average = False, t0 = 0, **kwargs):
 	""" Creates a 1D scatter/line plot:
@@ -270,6 +288,15 @@ def matrix2d(matrix, x_axis, y_axis, cb_axis, system, analysis, **kwargs):
 	vmin =0.001
 	vmax = None
 
+#	c = mcolors.ColorConverter().to_rgb
+#	bgr = make_colormap([c('blue'),c('lime'),0.50,c('lime'),c('red'),1.00,c('red')])
+#	bgr = make_colormap([c('red'),c('lime'),0.50,c('lime'),c('blue'),1.00,c('blue')])
+#	bgr.set_under('k')
+#	bgr.set_over('r')
+#	bgr.set_over('w')
+
+	bgr = plt.cm.get_cmap('gray')
+
 	# READING IN KWARG DICTIONARY INTO SPECIFIC VARIABLES
 	for name, value in kwargs.items():
 		if name == 'vmin':
@@ -281,12 +308,9 @@ def matrix2d(matrix, x_axis, y_axis, cb_axis, system, analysis, **kwargs):
 			cb_axis = '%s (%s)' %(cb_axis, value)
 		elif name == 'plt_title':
 			plt.title(r'%s' %(value), size='14')
-		
-	my_cmap = plt.cm.get_cmap('jet')
-	my_cmap.set_under('w')
-	my_cmap.set_over('r')
-	plt.imshow(matrix,cmap=my_cmap,vmin=vmin,vmax=vmax,interpolation='None',origin='lower')
-	cb1 = plt.colorbar(extend='max',cmap=my_cmap)
+	
+	plt.imshow(matrix,cmap=bgr,vmin=vmin,vmax=vmax,interpolation='none',origin='lower')
+	cb1 = plt.colorbar(extend='max',cmap=bgr)
 	cb1.set_label(r'%s' %(cb_axis), size=12)
 	plt.grid(b=True, which='major', axis='both', color='#808080', linestyle='--')
 	plt.xlabel(r'%s' %(x_axis), size=12)
