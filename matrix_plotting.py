@@ -4,41 +4,40 @@
 # PREAMBLE:
 
 from plotting_functions import *
+import sys
+import os
 
-avg_file = sys.argv[1]
-std_file = sys.argv[2]
+start = int(sys.argv[1])
+end = int(sys.argv[2])
+step = int(sys.argv[3])
 
-avg_data = np.loadtxt(avg_file)
-std_data = np.loadtxt(std_file)
+change_dir = os.chdir
 
-nRes = len(avg_data)
+j = 0
+for i in range(start,end,step):
+	j += step
+	change_dir('%03d.%03d.distance_matrix' %(i,j))
+	avg_file = '%03d.%03d.avg_distance_matrix.dat' %(i,j)
+	std_file = '%03d.%03d.std_distance_matrix.dat' %(i,j)
+	
+	avg_data = np.loadtxt(avg_file)
+	std_data = np.loadtxt(std_file)
+	
+	nRes = len(avg_data)
+	
+	if nRes != len(avg_data[0]):
+		print 'length of matrix data is not nRes X nRes; something is fucked up'
+		sys.exit()
+	
+	for x in range(nRes-1):
+		for y in range(x+1,nRes):
+			avg_data[y][x] = avg_data[x][y]
+			std_data[y][x] = std_data[x][y]
+	
+	matrix2d(avg_data,'Residue Number','Residue Number','avg','test_system',vmin=0.001,vmax=45,plt_title='Average COM-COM Residue distance matrix')
+	matrix2d(std_data,'Residue Number','Residue Number','std','test_system',vmin=0.001,vmax=6,plt_title='Standard Deviation')
 
-if nRes != len(avg_data[0]):
-	print 'length of matrix data is not nRes X nRes; something is fucked up'
-	sys.exit()
+	print i, j
 
-for i in range(nRes-1):
-	for j in range(i+1,nRes):
-		avg_data[j][i] = avg_data[i][j]
-		std_data[j][i] = std_data[i][j]
-
-matrix2d(avg_data,'Residue Number','Residue Number','avg','test_system')
-matrix2d(std_data,'Residue Number','Residue Number','std','test_system')
-
-
-#my_cmap = plt.cm.get_cmap('jet')
-#my_cmap.set_under('w')
-#
-#plt.imshow(avg_data,cmap=my_cmap,vmin=0.001,interpolation='None',origin='lower')
-#plt.grid(b=True, which='major', axis='both', color='#808080', linestyle='--')
-#plt.xlabel('Residue Number')
-#plt.ylabel('Residue Number')
-#plt.savefig('avg_data.png')
-#
-#plt.imshow(std_data,cmap=my_cmap,vmin=0.001,interpolation='None',origin='lower')
-#plt.grid(b=True, which='major', axis='both', color='#808080', linestyle='--')
-#plt.xlabel('Residue Number')
-#plt.ylabel('Residue Number')
-#
-#plt.savefig('std_data.png')
+	change_dir('..')
 
