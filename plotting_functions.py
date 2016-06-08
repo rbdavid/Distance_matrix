@@ -250,7 +250,7 @@ def hist2d(xdata, ydata, x_axis, y_axis, num_b, system, analysis, norm):
 	yedges = []
 	image = []
 
-def matrix2d(matrix, x_axis, y_axis, system, analysis, **kwargs):
+def matrix2d(matrix, x_axis, y_axis, cb_axis, system, analysis, **kwargs):
 	""" Creates a 2D matrix image
 
 	Usage: matrix2d(matrix,x_axis,y_axis,system,analysis)
@@ -264,6 +264,7 @@ def matrix2d(matrix, x_axis, y_axis, system, analysis, **kwargs):
 	kwargs:
 		vmin, vmax: floats that define the limits for the color bar; if below vmin, data will be colored white; if above vmax, data will be colored red (might want to change this for aesthetics)
 		plt_title: string to be added as the plot title
+		cb_units: sting to be added to the color bar label to indicate the units of the color bar 
 	"""
 
 	vmin =0.001
@@ -275,6 +276,9 @@ def matrix2d(matrix, x_axis, y_axis, system, analysis, **kwargs):
 			vmin = value
 		elif name == 'vmax':
 			vmax = value
+		elif name == 'cb_units':
+			cb_units = value
+			cb_axis = '%s (%s)' %(cb_axis, value)
 		elif name == 'plt_title':
 			plt.title(r'%s' %(value), size='14')
 		
@@ -282,7 +286,8 @@ def matrix2d(matrix, x_axis, y_axis, system, analysis, **kwargs):
 	my_cmap.set_under('w')
 	my_cmap.set_over('r')
 	plt.imshow(matrix,cmap=my_cmap,vmin=vmin,vmax=vmax,interpolation='None',origin='lower')
-	cb1 = plt.colorbar()
+	cb1 = plt.colorbar(extend='max',cmap=my_cmap)
+	cb1.set_label(r'%s' %(cb_axis), size=12)
 	plt.grid(b=True, which='major', axis='both', color='#808080', linestyle='--')
 	plt.xlabel(r'%s' %(x_axis), size=12)
 	plt.ylabel(r'%s' %(y_axis), size=12)
