@@ -63,7 +63,7 @@ def wrapping(x,dim):
 
 def euclid_dist(x,y,):
 	""" Calculates the Euclidian Distance between two arrays of the same size
-	Usage: dist = Euclid_distance(x,y)
+	Usage: dist,dist2 = euclid_dist(x,y)
 		
 	Arguments:
 	x, y: numpy arrays with the same size
