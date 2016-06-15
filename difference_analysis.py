@@ -17,13 +17,13 @@ from plotting_functions import *
 descriptor = sys.argv[1]	# descriptor to decide which trajectory group to analyze for all systems
 
 sys_list = []
-sys_list.append(['AMBER_apo'])
-sys_list.append(['AMBER_atp'])
+#sys_list.append(['AMBER_apo'])
+#sys_list.append(['AMBER_atp'])
 sys_list.append(['AMBER_ssrna'])
 sys_list.append(['AMBER_ssrna_atp'])
 sys_list.append(['AMBER_ssrna_adp_pi'])
 sys_list.append(['AMBER_ssrna_adp'])
-sys_list.append(['AMBER_ssrna_pi'])
+#sys_list.append(['AMBER_ssrna_pi'])
 
 nSys = len(sys_list)
 
@@ -34,16 +34,23 @@ nSys = len(sys_list)
 # MAIN PROGRAM:
 
 for i in range(nSys-1):
-	avg1 = np.loadtxt('../../%s/Distance_matrix/%s.avg_distance_matrix.dat' %(sys_list[i],descriptor))
-	std1 = np.loadtxt('../../%s/Distance_matrix/%s.std_distance_matrix.dat' %(sys_list[i],descriptor))
+	avg1 = np.loadtxt('../../%s/Distance_matrix/%s.avg_distance_matrix.dat' %(sys_list[i][0],descriptor))
+	std1 = np.loadtxt('../../%s/Distance_matrix/%s.std_distance_matrix.dat' %(sys_list[i][0],descriptor))
 
 	for j in range(i+1,nSys):
-		avg2 = np.loadtxt('../../%s/Distance_matrix/%s.avg_distance_matrix.dat' %(sys_list[j],descriptor))
-		std2 = np.loadtxt('../../%s/Distance_matrix/%s.std_distance_matrix.dat' %(sys_list[j],descriptor))
+		avg2 = np.loadtxt('../../%s/Distance_matrix/%s.avg_distance_matrix.dat' %(sys_list[j][0],descriptor))
+		std2 = np.loadtxt('../../%s/Distance_matrix/%s.std_distance_matrix.dat' %(sys_list[j][0],descriptor))
 
-		matrix2d(avg1-avg2,'Residue Number','Residue Number','Distance','%s.%s.%s' %(descriptor,sys_list[i],sys_list[j]),'difference_avg',cb_units='$\AA$')
-		matrix2d(std1-std2,'Residue Number','Residue Number','Distance','%s.%s.%s' %(descriptor,sys_list[i],sys_list[j]),'difference_std',cb_units='$\AA$')
+		avg_data = avg1 - avg2
+		std_data = std1 - std2
 
+		out1 = open('AVG_dif.%s.%s.output' %(sys_list[i][0],sys_list[j][0]),'w')
 
+		for x in range(10,len(avg1)-1):
+			for y in range(x+1,len(avg1)):
+				if abs(avg_data[x][y]) > 5.0:
+					out1.write('%s   %s   %03d (%d)   %03d (%d)   %f\n' %(sys_list[i][0],sys_list[j][0],x+1,x+168,y+1,y+168,avg_data[x][y]))
 
+		matrix2d(abs(avg1-avg2),'Residue Number','Residue Number','Distance','%s.%s.%s' %(descriptor,sys_list[i][0],sys_list[j][0]),'difference_avg',cb_units='$\AA$',vmax=12.)
+		matrix2d(abs(std1-std2),'Residue Number','Residue Number','Distance','%s.%s.%s' %(descriptor,sys_list[i][0],sys_list[j][0]),'difference_std',cb_units='$\AA$',vmax=2.0)
 
