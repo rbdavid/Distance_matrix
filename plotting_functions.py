@@ -303,9 +303,9 @@ def matrix2d(matrix, x_axis, y_axis, cb_axis, system, analysis, **kwargs):
 #	bgr.set_over('w')
 #	my_cmap = bgr
 
-#	my_cmap = plt.cm.get_cmap('jet')
+	my_cmap = plt.cm.get_cmap('jet')
 
-	my_cmap = plt.cm.get_cmap('gray')
+#	my_cmap = plt.cm.get_cmap('gray')
 
 	# READING IN KWARG DICTIONARY INTO SPECIFIC VARIABLES
 	for name, value in kwargs.items():
