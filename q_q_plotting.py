@@ -42,8 +42,8 @@ for i in range(nWindows-1):
 		std_file = '%03d.%03d.std_distance_matrix.dat' %(window_data[j][0],window_data[j][1])
 		avg_data2 = np.loadtxt(avg_file).flatten()
 		std_data2 = np.loadtxt(std_file).flatten()
+		change_dir('..')
 		
 		plot_1d(avg_data1[:],avg_data2[:],'k.','Distance (Traj %03d - %03d)' %(window_data[i][0],window_data[i][1]),'Distance (Traj %03d - %03d)' %(window_data[j][0],window_data[j][1]),'avg.windows_%d_%d' %(i,j),'q_q_plot',draw_line=1)
 		plot_1d(std_data1[:],std_data2[:],'k.','Distance (Traj %03d - %03d)' %(window_data[i][0],window_data[i][1]),'Distance (Traj %03d - %03d)' %(window_data[j][0],window_data[j][1]),'std.windows_%d_%d' %(i,j),'q_q_plot',draw_line=1)
-		change_dir('..')
 
