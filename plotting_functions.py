@@ -241,6 +241,49 @@ def scat_hist(xdata, ydata, color, x_axis, y_axis, system, analysis, num_b = 100
 	plt.close()
 
 
+def bar(xdata, ydata, x_axis, y_axis, **kwarg): 
+	""" Creates a bar graph
+
+	Usage: bar(xdata, ydata, x_axis, y_axis, **kwarg)
+
+	Arguments:
+	xdata, ydata: self-explanatory
+	x_axis, y_axis: strings to be printed on the axi labels
+	system: descriptor for the system analyzed
+	analysis: descriptor for the analysis performed and plotted
+
+	kwargs:
+	xunits, yunits: string with correct math text describing the units for the x/y data
+	x_lim, y_lim: list (or tuple) w/ two elements, setting the limits of the x/y ranges of plot
+	plt_title: string to be added as the plot title
+
+	"""
+	
+	# INITIATING THE PLOT...
+	plt.bar(xdata,ydata)
+
+	# READING IN KWARG DICTIONARY INTO SPECIFIC VARIABLES
+	for name, value in kwargs.items():
+		if name == 'xunits':
+			x_units = value
+			x_axis = '%s (%s)' %(x_axis, value)
+		elif name == 'yunits':
+			y_units = value
+			y_axis = '%s (%s)' %(y_axis, value)
+		elif name == 'x_lim':
+			plt.xlim(value)
+		elif name == 'y_lim':
+			plt.ylim(value)
+		elif name == 'plt_title':
+			plt.title(r'%s' %(value), size='16')
+	
+	plt.grid(b=True, which='major', axis='both', color='#808080', linestyle='--')
+	plt.ylabel(r'%s' %(y_axis),size=12)
+	plt.xlabel(r'%s' %(x_axis),size=12)
+
+	plt.savefig('%s.%s.bar.png' %(system,analysis),dpi=300)
+
+
 def hist2d(xdata, ydata, x_axis, y_axis, num_b, system, analysis, norm):
 	""" Creates a 2D histogram (heat map)
 	
