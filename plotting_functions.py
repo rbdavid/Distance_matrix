@@ -241,7 +241,7 @@ def scat_hist(xdata, ydata, color, x_axis, y_axis, system, analysis, num_b = 100
 	plt.close()
 
 
-def bar(xdata, ydata, x_axis, y_axis, **kwarg): 
+def bar(xdata, ydata, x_axis, y_axis, system, analysis, **kwarg): 
 	""" Creates a bar graph
 
 	Usage: bar(xdata, ydata, x_axis, y_axis, **kwarg)
