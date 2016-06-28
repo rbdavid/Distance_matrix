@@ -62,8 +62,7 @@ while start <= end:
 			for j in range(i+1,nRes):
 				res1 = u_important.residues[j]
 				com1 = res1.center_of_mass()
-				dist2 = MSD(com0,com1,1)
-				dist = sqrt(dist2)
+				dist, dist2 = euclid_dist(com0,com1)
 				avg_matrix[i,j] += dist
 				std_matrix[i,j] += dist2
 	start +=1
