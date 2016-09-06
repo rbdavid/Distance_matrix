@@ -27,10 +27,12 @@ def ffprint(string):
 pro = 'protein'
 nucleic = 'nucleic or resname A5 A3 U5'
 
+sites = ['base','sugar','phosphate']
+
+# SIMPLE SELECTION STRINGS TO USE FOR THE DESIRED SELECTIONS
 sugar = " name C5' H5' H5'' C4' H4' O4' C1' H1' C3' H3' C2' O2' HO2' "	# DOES NOT INCLUDE THE O5' atom (which I will include in the phosphate atom selection string...
 sugar_5= " name HO5' O5' or " + sugar
 sugar_3= sugar + " O3' HO3' "
-
 base = ' name N9 C8 H8 N7 C5 C6 N6 H61 H62 N1 C2 H2 N3 C4 O6 H1 H21 H22 H6 H5 N4 H41 H42 C2 O2 O4 H3'	# selection string that will select all appropriate atoms for any of the nucleic residues...
 
 #phos = 'nucleic and name (P or OP1 or OP2)'
@@ -43,21 +45,59 @@ nucleic_sel = u.select_atoms(nucleic)
 nProt_res = protein_sel.n_residues
 nNucl_res = nucleic_sel.n_residues
 
+selection_output = open('selection_order.output','w')
+rna_sel_list = []
+for i in range(len(sites)):
+	if sites[i] == 'base':
+		selection_output.write('### BASE ###')
+		sel_string = base 
+		for j in range(nNucl_res):
+			rna_sel_list.append(nucleic_sel.residues[j].select_atoms(base))
+
+	elif sites[i] == 'sugar':
+		selection_output.write('### SUGAR ###')
+		for j in range(nNucl_res):
+			if j == 0:
+				rna_sel_list.append(nucleic_sel.residues[j].select_atoms(sugar_5))
+			elif j == range(nNucl_res)[-1]:
+				rna_sel_list.append(nucleic_sel.residues[j].select_atoms(sugar_3))
+			else:
+				rna_sel_list.append(nucleic_sel.residues[j].select_atoms(sugar))
+
+	elif sites[i] == 'phosphate':
+		selection_output.write('### PHOSPHATE ###')
+		for j in range(nNucl_res):
+			if j == 0:
+				continue
+			else:
+				res_num = nucleic_sel.residues[j].resid
+				temp_O3 = nucleic_sel.residues[j-1][-1].index
+				if temp_O3.name != "O3'":
+					print 'Something is fucky'
+					sys.exit()
+				rna_sel_list.append(nucleic_sel.select_atoms(" (resid %s and name P OP1 OP2 O5') or bynum %s" %(res_num,temp_O3+1)))
+
 rna_sel_list = []
 for i in range(nNucl_res):
 	temp_resname = nucleic_sel.residues[i].resname
+	print 'Resname:', temp_resname
 	rna_sel_list.append(nucleic_sel.residues[i].select_atoms(base))		# GETTING A DEPRECIATION WARNING; need to figure out what to do about this
+	print nucleic_sel.residues[i].select_atoms(base).atoms
 	if temp_resname in ['A5','U5','C5','G5']:
 		rna_sel_list.append(nucleic_sel.residues[i].select_atoms(sugar_5))
+		print nucleic_sel.residues[i].select_atoms(sugar_5).atoms
 	elif temp_resname in ['A3','U3','C3','G3']:
 		rna_sel_list.append(nucleic_sel.residues[i].select_atoms(sugar_3))
+		print nucleic_sel.residues[i].select_atoms(sugar_3).atoms
 	else:
 		rna_sel_list.append(nucleic_sel.residues[i].select_atoms(sugar))
+		print nucleic_sel.residues[i].select_atoms(sugar).atoms
 
 ###	rna_sel_list.append(phosphate_sel) 		# NEED TO FIGURE OUT THE PHOSPHATE SELECTION STRING...
 
-avg_matrix = zeros((nProt_res,nNucl_res))
-std_matrix = zeros((nProt_res,nNucl_res))
+nSubstrate_sels = len(rna_sel_list)
+avg_matrix = zeros((nProt_res,nSubstrate_sels))
+std_matrix = zeros((nProt_res,nSubstrate_sels))
 
 nSteps = 0
 while start <= end:
@@ -71,8 +111,8 @@ while start <= end:
 			temp_prot_com[i] = protein_sel.residues[i].center_of_mass()
 		
 		for i in range(nProt_res):
-			for j in range(nNucl_res):
-				dist, dist2 = euclid_dist(temp_prot_com[i], nucleic_sel.residues[j].center_of_mass())
+			for j in range(nSubstrate_sels):
+				dist, dist2 = euclid_dist(temp_prot_com[i], rna_sel_list[j].center_of_mass())
 				avg_matrix[i,j] += dist
 				std_matrix[i,j] += dist2
 	start += 1
