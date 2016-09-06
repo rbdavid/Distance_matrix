@@ -55,14 +55,13 @@ while start <= end:
 	for ts in u.trajectory:
 		if ts.frame%1000 == 0:
 			ffprint('Working on timestep %d of trajectory %d' %(ts.frame, start))
+		temp_prot_com = zeros((nRes,3))
+		for i in range(nRes):
+			temp_prot_com[i] = u_important.residues[i].center_of_mass()
 
 		for i in range(nRes-1):
-			res0 = u_important.residues[i]
-			com0 = res0.center_of_mass()
 			for j in range(i+1,nRes):
-				res1 = u_important.residues[j]
-				com1 = res1.center_of_mass()
-				dist, dist2 = euclid_dist(com0,com1)
+				dist, dist2 = euclid_dist(temp_prot_com[i],temp_prot_com[j])
 				avg_matrix[i,j] += dist
 				std_matrix[i,j] += dist2
 	start +=1
@@ -73,14 +72,9 @@ avg_matrix /= nSteps
 std_matrix /= nSteps
 std_matrix = sqrt(std_matrix - square(avg_matrix))
 
-out1 = open('%03d.%03d.avg_distance_matrix.dat' %(int(sys.argv[3]),end),'w')
-out2 = open('%03d.%03d.std_distance_matrix.dat' %(int(sys.argv[3]),end),'w')
-for i in range(nRes):
-	for j in range(nRes):
-		out1.write('%10f   ' %(avg_matrix[i,j]))
-		out2.write('%10f   ' %(std_matrix[i,j]))
-	out1.write('\n')
-	out2.write('\n')
-out1.close()
-out2.close()
+with open('%03d.%03d.avg_distance_matrix.dat' %(int(sys.argv[3]),end),'w') as f:
+	np.savetxt(f,avg_matrix)
+
+with open('%03d.%03d.std_distance_matrix.dat' %(int(sys.argv[3]),end),'w') as f:
+	np.savetxt(f,std_matrix)
 
