@@ -61,7 +61,7 @@ def wrapping(x,dim):
 			t[i] = -dim[i]*round(x[i]/dim[i])
 	return t
 
-def euclid_dist(x,y,):
+def euclid_dist(x,y):
 	""" Calculates the Euclidian Distance between two arrays of the same size
 	Usage: dist,dist2 = euclid_dist(x,y)
 		
