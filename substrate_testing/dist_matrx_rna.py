@@ -1,4 +1,5 @@
-#!/Library/Frameworks/Python.framework/Versions/2.7/bin/python
+#!/mnt/lustre_fs/users/mjmcc/apps/python2.7/bin/python
+##!/Library/Frameworks/Python.framework/Versions/2.7/bin/python
 # -----------------------------------
 import MDAnalysis
 import numpy as np
@@ -129,9 +130,9 @@ avg_matrix /= nSteps
 std_matrix /= nSteps
 std_matrix = sqrt(std_matrix - square(avg_matrix))
 
-with open('%03d.%03d.%s.avg_dist_mtx.dat' %(start,end,system),'w') as f:
+with open('%03d.%03d.%s.avg_dist_mtx.dat' %(sys.argv[3],end,system),'w') as f:
 	np.savetxt(f,avg_matrix)
 
-with open('%03d.%03d.%s.stdv_dist_mtx.dat' %(start,end,system),'w') as f:
+with open('%03d.%03d.%s.stdv_dist_mtx.dat' %(sys.argv[3],end,system),'w') as f:
 	np.savetxt(f,std_matrix)
 
