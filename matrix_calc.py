@@ -45,6 +45,7 @@ ffprint(nRes)
 
 avg_matrix = zeros((nRes,nRes))
 std_matrix = zeros((nRes,nRes))
+temp_prot_com = zeros((nRes,3))
 
 nSteps = 0
 while start <= end:
@@ -55,7 +56,7 @@ while start <= end:
 	for ts in u.trajectory:
 		if ts.frame%1000 == 0:
 			ffprint('Working on timestep %d of trajectory %d' %(ts.frame, start))
-		temp_prot_com = zeros((nRes,3))
+
 		for i in range(nRes):
 			temp_prot_com[i] = u_important.residues[i].center_of_mass()
 
