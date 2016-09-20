@@ -9,6 +9,8 @@ __pycache__/
 *~
 Test_Case1/001.005.avg_distance_matrix.dat
 Test_Case1/001.005.std_distance_matrix.dat
+substrate_testing/001.005.amber_ssrna.avg_dist_mtx.dat
+substrate_testing/001.005.amber_ssrna.std_dist_mtx.dat
 
 # Distribution / packaging
 .Python

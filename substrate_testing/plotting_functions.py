@@ -333,6 +333,7 @@ def matrix2d(matrix, x_axis, y_axis, cb_axis, system, analysis, **kwargs):
 		vmin, vmax: floats that define the limits for the color bar; if below vmin, data will be colored white; if above vmax, data will be colored red (might want to change this for aesthetics)
 		plt_title: string to be added as the plot title
 		cb_units: sting to be added to the color bar label to indicate the units of the color bar 
+		xlim, ylim: list (or tuple) w/ two elements, setting the limits of the x/y ranges of plot
 	"""
 
 	vmin =0.001
@@ -361,6 +362,10 @@ def matrix2d(matrix, x_axis, y_axis, cb_axis, system, analysis, **kwargs):
 			cb_axis = '%s (%s)' %(cb_axis, value)
 		elif name == 'plt_title':
 			plt.title(r'%s' %(value), size='14')
+		elif name == 'xlim':
+			plt.xlim(value)
+		elif name == 'ylim':
+			plt.ylim(value)
 	
 	plt.pcolor(matrix,cmap=my_cmap,vmin=vmin,vmax=vmax) # ,interpolation='none',origin='lower'
 	cb1 = plt.colorbar(extend='max',cmap=my_cmap)
