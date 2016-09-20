@@ -34,8 +34,8 @@ for i in range(start,end,step):
 			avg_data[y][x] = avg_data[x][y]
 			std_data[y][x] = std_data[x][y]
 	
-	matrix2d(avg_data,'Residue Number','Residue Number','Distance','avg','test_system',vmin=0.001,vmax=45,plt_title='Average COM-COM Residue Distance (Traj %03d - %03d)' %(i,j),cb_units='$\AA$')
-	matrix2d(std_data,'Residue Number','Residue Number','Distance','std','test_system',vmin=0.001,vmax=6,plt_title='Standard Deviation (Traj %03d - %03d)' %(i,j),cb_units='$\AA$')
+	matrix2d(avg_data,'Prot Residue Number','Prot Residue Number','Distance','avg','test_system',vmin=0.001,vmax=45,plt_title='Avg COM-COM Distance (Traj %03d - %03d)' %(i,j),cb_units='$\AA$',xlim=(0,451),ylim=(0,451))
+	matrix2d(std_data,'Prot Residue Number','Prot Residue Number','Distance','std','test_system',vmin=0.001,vmax=6,plt_title='St. Dev. of COM-COM Distance (Traj %03d - %03d)' %(i,j),cb_units='$\AA$',xlim=(0,451),ylim=(0,451))
 
 	print i, j
 

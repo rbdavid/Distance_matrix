@@ -7,6 +7,8 @@ __pycache__/
 *.so
 
 *~
+Test_Case1/001.005.avg_distance_matrix.dat
+Test_Case1/001.005.std_distance_matrix.dat
 
 # Distribution / packaging
 .Python
