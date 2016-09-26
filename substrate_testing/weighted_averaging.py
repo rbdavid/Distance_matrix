@@ -40,8 +40,8 @@ for line in sels:
 	if not line.startswith('#'): 
 		count += 1
 
-avg_array = zeros((nProt_res,count))
-std_array = zeros((nProt_res,count))
+avg_array = zeros((nProt_res,count-1))
+std_array = zeros((nProt_res,count-1))
 
 nSteps = 0
 for i in range(nWindows):
