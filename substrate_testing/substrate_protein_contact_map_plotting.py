@@ -29,8 +29,8 @@ for i in range(start,end,step):
 	nProt_res = len(avg_data)
 	nSub_res = len(avg_data[0])
 
-	matrix2d(avg_data,'Nucleic Selection','Protein Residue Number','Distance','avg.%s' %(system),'%03d.%03d.pro-ssRNA' %(1,5),cb_units='$\AA$',plt_title='Avg COM-COM Distance (Traj %03d - %03d)' %(1,5),xlim=(0,nSub_res),ylim=(0,nProt_res),vmax=45.0)
-	matrix2d(std_data,'Nucleic Selection','Protein Residue Number','St. Dev. of Distance','stdev.%s' %(system),'%03d.%03d.pro-ssRNA' %(1,5),cb_units='$\AA$',plt_title='St. Dev. COM-COM Distance (Traj %03d - %03d)' %(1,5),xlim=(0,nSub_res),ylim=(0,nProt_res),vmax=6.0)
+	matrix2d(avg_data,'Nucleic Selection','Protein Residue Number','Distance','avg.%s' %(system),'%03d.%03d.pro-ssRNA' %(i,j),cb_units='$\AA$',plt_title='Avg COM-COM Distance (Traj %03d - %03d)' %(i,j),xlim=(0,nSub_res),ylim=(0,nProt_res),vmax=45.0)
+	matrix2d(std_data,'Nucleic Selection','Protein Residue Number','St. Dev. of Distance','stdev.%s' %(system),'%03d.%03d.pro-ssRNA' %(i,j),cb_units='$\AA$',plt_title='St. Dev. COM-COM Distance (Traj %03d - %03d)' %(i,j),xlim=(0,nSub_res),ylim=(0,nProt_res),vmax=6.0)
 
 	print i, j
 
