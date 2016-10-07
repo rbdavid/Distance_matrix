@@ -78,17 +78,17 @@ rna_sel_list = []
 selection_output.write('# Number  Resname  Selection_Type #')
 for i in range(nNucl_res):
 	temp_resname = nucleic_sel.residues[i].resname
-	selection_output.write('%d   %s   Base' %(i+1,temp_resname))
+	selection_output.write('%d   %s   Base\n' %(i+1,temp_resname))
 	rna_sel_list.append(nucleic_sel.residues[i].select_atoms(base))		# GETTING A DEPRECIATION WARNING; need to figure out what to do about this
 	if temp_resname in ['A5','U5','C5','G5']:
 		rna_sel_list.append(nucleic_sel.residues[i].select_atoms(sugar_5))
-		selection_output.write('%d   %s   Sugar' %(i+1,temp_resname))
+		selection_output.write('%d   %s   Sugar\n' %(i+1,temp_resname))
 	elif temp_resname in ['A3','U3','C3','G3']:
 		rna_sel_list.append(nucleic_sel.residues[i].select_atoms(sugar_3))
-		selection_output.write('%d   %s   Sugar' %(i+1,temp_resname))
+		selection_output.write('%d   %s   Sugar\n' %(i+1,temp_resname))
 	else:
 		rna_sel_list.append(nucleic_sel.residues[i].select_atoms(sugar))
-		selection_output.write('%d   %s   Sugar' %(i+1,temp_resname))
+		selection_output.write('%d   %s   Sugar\n' %(i+1,temp_resname))
 	if i == 0:
 		continue
 	else:
@@ -98,7 +98,7 @@ for i in range(nNucl_res):
 			print "The last atom in residue %d is not named O3'"
 			sys.exit()
 		rna_sel_list.append(nucleic_sel.select_atoms("(resid %s and name P OP1 OP2 O5') or bynum %s" %(res_num,temp_O3.index+1)))
-		selection_output.write('%d   %s   Phosphate' %(i+1,temp_resname))
+		selection_output.write('%d   %s   Phosphate\n' %(i+1,temp_resname))
 
 selection_output.close()
 
